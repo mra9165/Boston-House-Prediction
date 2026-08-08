@@ -11,3 +11,7 @@
 py -3.11 -m venv venv
 venv\Scripts\Activate.ps1
 ```
+
+### Live Demo
+
+[Try the Boston House Price Prediction App](https://boston-house-prediction-1-mj7m.onrender.com)
