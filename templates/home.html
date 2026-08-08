@@ -1,3 +1,850 @@
-<h1>
-    Hello World
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Boston House AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            color: #e5e7eb;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.18), transparent 30%),
+                radial-gradient(circle at 90% 20%, rgba(139, 92, 246, 0.16), transparent 30%),
+                #070b14;
+        }
+
+        .page {
+            width: min(1200px, 94%);
+            margin: auto;
+            padding: 40px 0 70px;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+
+        .hero-text {
+            max-width: 700px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            color: #93c5fd;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 12px #60a5fa;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .model-card {
+            min-width: 230px;
+            padding: 22px;
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(18px);
+            border-radius: 18px;
+        }
+
+        .model-card .label {
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .model-card .value {
+            font-size: 25px;
+            font-weight: 700;
+            margin-top: 7px;
+        }
+
+        .model-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            color: #86efac;
+            font-size: 13px;
+        }
+
+        /* ================= MAIN CARD ================= */
+
+        .main-card {
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.35),
+                inset 0 1px rgba(255, 255, 255, 0.04);
+        }
+
+        .card-header {
+            padding: 28px 32px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .card-header h2 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .card-header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* ================= FORM ================= */
+
+        form {
+            padding: 30px 32px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0 18px;
+        }
+
+        .section-number {
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: rgba(59, 130, 246, 0.13);
+            color: #60a5fa;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .section-title h3 {
+            font-size: 15px;
+        }
+
+        .section-title span {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .field-description {
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border-radius: 11px;
+            border: 1px solid #263247;
+            background: rgba(7, 11, 20, 0.65);
+            color: #e5e7eb;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        input:hover,
+        select:hover {
+            border-color: #334155;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow:
+                0 0 0 3px rgba(96, 165, 250, 0.10),
+                0 0 20px rgba(96, 165, 250, 0.08);
+        }
+
+        select option {
+            background: #0f172a;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            height: 50px;
+            padding: 0 25px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .predict-btn {
+            flex: 1;
+            color: white;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .predict-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+        .clear-btn {
+            color: #94a3b8;
+            background: #111827;
+            border: 1px solid #263247;
+        }
+
+        .clear-btn:hover {
+            color: white;
+            border-color: #475569;
+        }
+
+        /* ================= RESULT ================= */
+
+        .prediction {
+            margin: 0 32px 32px;
+            padding: 30px;
+            border-radius: 18px;
+            text-align: center;
+            background:
+                radial-gradient(circle at center, rgba(59, 130, 246, 0.15), transparent 65%),
+                rgba(30, 41, 59, 0.65);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+
+        .prediction-label {
+            color: #60a5fa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .prediction-value {
+            margin-top: 10px;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            background: linear-gradient(90deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            text-align: center;
+            color: #475569;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .model-card {
+                width: 100%;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding-top: 25px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .main-card {
+                border-radius: 18px;
+            }
+
+            .card-header,
+            form {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .prediction {
+                margin: 0 22px 22px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <!-- ================= HERO ================= -->
+
+    <div class="hero">
+
+        <div class="hero-text">
+
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Machine Learning Prediction System
+            </div>
+
+            <h1>
+                Predict Your
+                <span class="gradient-text">House Value.</span>
+            </h1>
+
+            <p>
+                Enter property characteristics and let our trained
+                regression model estimate the house price in real time.
+            </p>
+
+        </div>
+
+
+        <div class="model-card">
+
+            <div class="label">
+                Model
+            </div>
+
+            <div class="value">
+                Regression
+            </div>
+
+            <div class="model-status">
+                <span class="badge-dot"></span>
+                Model ready
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="main-card">
+
+        <div class="card-header">
+
+            <h2>
+                Property Information
+            </h2>
+
+            <p>
+                Provide the 13 features used by the Boston Housing model.
+            </p>
+
+        </div>
+
+
+        <!-- ================= FORM ================= -->
+
+        <form
+            action="{{ url_for('predict') }}"
+            method="post"
+            id="predictionForm"
+        >
+
+            <!-- LOCATION / PROPERTY -->
+
+            <div class="section-title">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <div>
+                    <h3>Property Characteristics</h3>
+                    <span>Basic information about the property</span>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="field">
+
+                    <label for="CRIM">CRIM</label>
+
+                    <div class="field-description">
+                        Per capita crime rate
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="CRIM"
+                        id="CRIM"
+                        placeholder="0.00632"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="ZN">ZN</label>
+
+                    <div class="field-description">
+                        Residential land zoned (%)
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="ZN"
+                        id="ZN"
+                        placeholder="18"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="INDUS">INDUS</label>
+
+                    <div class="field-description">
+                        Non-retail business acres
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="INDUS"
+                        id="INDUS"
+                        placeholder="2.31"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="CHAS">CHAS</label>
+
+                    <div class="field-description">
+                        Charles River indicator
+                    </div>
+
+                    <select name="CHAS" id="CHAS" required>
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="0">
+                            0 — No
+                        </option>
+
+                        <option value="1">
+                            1 — Yes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="NOX">NOX</label>
+
+                    <div class="field-description">
+                        Nitric oxide concentration
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="NOX"
+                        id="NOX"
+                        placeholder="0.538"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="RM">RM</label>
+
+                    <div class="field-description">
+                        Average rooms per dwelling
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="RM"
+                        id="RM"
+                        placeholder="6.575"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="Age">AGE</label>
+
+                    <div class="field-description">
+                        Older homes proportion
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        max="100"
+                        name="Age"
+                        id="Age"
+                        placeholder="65.2"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="DIS">DIS</label>
+
+                    <div class="field-description">
+                        Distance to employment centres
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="DIS"
+                        id="DIS"
+                        placeholder="4.09"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="RAD">RAD</label>
+
+                    <div class="field-description">
+                        Highway accessibility
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="RAD"
+                        id="RAD"
+                        placeholder="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="TAX">TAX</label>
+
+                    <div class="field-description">
+                        Property tax rate
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="TAX"
+                        id="TAX"
+                        placeholder="296"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="PTRATIO">PTRATIO</label>
+
+                    <div class="field-description">
+                        Pupil-teacher ratio
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="PTRATIO"
+                        id="PTRATIO"
+                        placeholder="15.3"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="B">B</label>
+
+                    <div class="field-description">
+                        Demographic index
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="B"
+                        id="B"
+                        placeholder="396.9"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="LSTAT">LSTAT</label>
+
+                    <div class="field-description">
+                        Lower-status population (%)
+                    </div>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        name="LSTAT"
+                        id="LSTAT"
+                        placeholder="4.98"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= ACTIONS ================= -->
+
+            <div class="actions">
+
+                <button
+                    type="submit"
+                    class="predict-btn"
+                    id="predictButton"
+                >
+                    ✦ Predict House Price
+                </button>
+
+                <button
+                    type="reset"
+                    class="clear-btn"
+                    id="clearButton"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- ================= RESULT ================= -->
+
+        {% if prediction_text %}
+
+        <div class="prediction">
+
+            <div class="prediction-label">
+                Estimated House Value
+            </div>
+
+            <div class="prediction-value">
+                {{ prediction_text }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="footer">
+        Powered by Machine Learning · Boston Housing Dataset
+    </div>
+
+</div>
+
+
+<script>
+
+    const form = document.getElementById("predictionForm");
+
+    const predictButton =
+        document.getElementById("predictButton");
+
+    const clearButton =
+        document.getElementById("clearButton");
+
+
+    /*
+     * Loading state
+     */
+
+    form.addEventListener("submit", function () {
+
+        predictButton.innerHTML =
+            "⟳ &nbsp; Predicting...";
+
+        predictButton.disabled = true;
+
+    });
+
+
+    /*
+     * Reset button
+     */
+
+    clearButton.addEventListener("click", function () {
+
+        predictButton.innerHTML =
+            "✦ Predict House Price";
+
+        predictButton.disabled = false;
+
+    });
+
+</script>
+
+</body>
+
+</html>
