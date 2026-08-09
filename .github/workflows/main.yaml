@@ -1,0 +1,23 @@
+name: CI/CD - Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Build Docker image
+      - name: Build Docker image
+        run: docker build -t boston-prediction .
+
+      # 3. Deploy to Render
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
